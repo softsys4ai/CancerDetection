@@ -1,5 +1,9 @@
 # CancerDetection
+## Goal:
+1.	Build a classifier that can distinguish people with cancer and people without cancer in each age group (Young and Mature groups).
+2.	Discover the meaningful gene structures (signatures) that have an impact to the cancer detection
 
+## Current Approach: HSIC Lasso + Bayesian Optimization + SVM
 Usage of **extrFeat.py**: extract a small number of features by using HSIC Lasso
 ```
 # python <script> <original_data_filepath> <label_name>
