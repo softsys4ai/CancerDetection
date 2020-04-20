@@ -1,0 +1,20 @@
+# April 20
+HSIC Lasso: feature selection - 111 influential features out of ~400k features
+Bayesian Optimization: tune SVM
+SVM: binary classifier
+
+Best Model: 97.01% test accuracy. Test set = 40% of the original dataset
+
+# April 15.
+1. Siamese Network + One-shot learning
+	A. use the original gene vector: about 400K in size
+	B. map it into a matrix
+
+2. Feature Selection: Hilbert Schmidt Independence Criterion Lasso (HSIC Lasso) 
+	With selected features:
+	A. KNN
+	B. Random Forester
+	C. SVM
+
+3. Deep Neural Pursuit: ask for code
+
