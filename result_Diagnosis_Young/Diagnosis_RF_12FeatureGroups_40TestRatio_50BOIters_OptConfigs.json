@@ -1,0 +1,134 @@
+{
+    "numFeat5": {
+        "modelParams": {
+            "bootstrap": false,
+            "max_depth": 5,
+            "max_features": null,
+            "min_samples_leaf": 1,
+            "min_samples_split": 10,
+            "n_estimators": 150
+        },
+        "testAcc": 0.8333
+    },
+    "numFeat10": {
+        "modelParams": {
+            "bootstrap": false,
+            "max_depth": 10,
+            "max_features": "log2",
+            "min_samples_leaf": 1,
+            "min_samples_split": 5,
+            "n_estimators": 200
+        },
+        "testAcc": 0.9444
+    },
+    "numFeat30": {
+        "modelParams": {
+            "bootstrap": false,
+            "max_depth": 30,
+            "max_features": "sqrt",
+            "min_samples_leaf": 1,
+            "min_samples_split": 5,
+            "n_estimators": 500
+        },
+        "testAcc": 0.9444
+    },
+    "numFeat50": {
+        "modelParams": {
+            "bootstrap": true,
+            "max_depth": 40,
+            "max_features": null,
+            "min_samples_leaf": 4,
+            "min_samples_split": 5,
+            "n_estimators": 250
+        },
+        "testAcc": 0.9444
+    },
+    "numFeat70": {
+        "modelParams": {
+            "bootstrap": true,
+            "max_depth": 5,
+            "max_features": "log2",
+            "min_samples_leaf": 2,
+            "min_samples_split": 2,
+            "n_estimators": 350
+        },
+        "testAcc": 1.0
+    },
+    "numFeat100": {
+        "modelParams": {
+            "bootstrap": false,
+            "max_depth": 20,
+            "max_features": "log2",
+            "min_samples_leaf": 1,
+            "min_samples_split": 10,
+            "n_estimators": 100
+        },
+        "testAcc": 1.0
+    },
+    "numFeat150": {
+        "modelParams": {
+            "bootstrap": false,
+            "max_depth": 50,
+            "max_features": "log2",
+            "min_samples_leaf": 1,
+            "min_samples_split": 2,
+            "n_estimators": 250
+        },
+        "testAcc": 1.0
+    },
+    "numFeat200": {
+        "modelParams": {
+            "bootstrap": true,
+            "max_depth": 40,
+            "max_features": "log2",
+            "min_samples_leaf": 1,
+            "min_samples_split": 2,
+            "n_estimators": 300
+        },
+        "testAcc": 0.9444
+    },
+    "numFeat400": {
+        "modelParams": {
+            "bootstrap": false,
+            "max_depth": 50,
+            "max_features": "log2",
+            "min_samples_leaf": 2,
+            "min_samples_split": 10,
+            "n_estimators": 350
+        },
+        "testAcc": 1.0
+    },
+    "numFeat600": {
+        "modelParams": {
+            "bootstrap": true,
+            "max_depth": 60,
+            "max_features": null,
+            "min_samples_leaf": 2,
+            "min_samples_split": 10,
+            "n_estimators": 250
+        },
+        "testAcc": 0.8889
+    },
+    "numFeat800": {
+        "modelParams": {
+            "bootstrap": true,
+            "max_depth": 20,
+            "max_features": "log2",
+            "min_samples_leaf": 4,
+            "min_samples_split": 10,
+            "n_estimators": 350
+        },
+        "testAcc": 0.9444
+    },
+    "numFeat1000": {
+        "modelParams": {
+            "bootstrap": false,
+            "max_depth": 20,
+            "max_features": "sqrt",
+            "min_samples_leaf": 4,
+            "min_samples_split": 5,
+            "n_estimators": 250
+        },
+        "testAcc": 0.9444
+    }
+}

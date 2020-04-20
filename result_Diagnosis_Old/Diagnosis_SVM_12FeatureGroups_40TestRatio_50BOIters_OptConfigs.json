@@ -1,0 +1,98 @@
+{
+    "numFeat5": {
+        "modelParams": {
+            "C": 850.6350844022794,
+            "gamma": 0.0183183217786652,
+            "kernel": "rbf"
+        },
+        "testAcc": 0.8534
+    },
+    "numFeat10": {
+        "modelParams": {
+            "C": 936.0698859432339,
+            "gamma": 0.01598914832557517,
+            "kernel": "rbf"
+        },
+        "testAcc": 0.9397
+    },
+    "numFeat30": {
+        "modelParams": {
+            "C": 705.5886644702663,
+            "gamma": 0.02,
+            "kernel": "rbf"
+        },
+        "testAcc": 0.9397
+    },
+    "numFeat50": {
+        "modelParams": {
+            "C": 918.2010873399793,
+            "gamma": 0.01934892252440155,
+            "kernel": "rbf"
+        },
+        "testAcc": 0.9569
+    },
+    "numFeat70": {
+        "modelParams": {
+            "C": 1000.0,
+            "gamma": 0.02,
+            "kernel": "rbf"
+        },
+        "testAcc": 0.9569
+    },
+    "numFeat100": {
+        "modelParams": {
+            "C": 658.4258529388811,
+            "gamma": 0.00465297462517551,
+            "kernel": "rbf"
+        },
+        "testAcc": 0.9655
+    },
+    "numFeat150": {
+        "modelParams": {
+            "C": 209.4368439970402,
+            "gamma": 0.01930943533637738,
+            "kernel": "rbf"
+        },
+        "testAcc": 0.9655
+    },
+    "numFeat200": {
+        "modelParams": {
+            "C": 517.4611142652391,
+            "gamma": 0.009334947476349909,
+            "kernel": "rbf"
+        },
+        "testAcc": 0.9483
+    },
+    "numFeat400": {
+        "modelParams": {
+            "C": 169.10304918952752,
+            "gamma": 0.01870840708022342,
+            "kernel": "rbf"
+        },
+        "testAcc": 0.9569
+    },
+    "numFeat600": {
+        "modelParams": {
+            "C": 936.806204760011,
+            "gamma": 0.003040912167793568,
+            "kernel": "rbf"
+        },
+        "testAcc": 0.9569
+    },
+    "numFeat800": {
+        "modelParams": {
+            "C": 219.03672563069745,
+            "gamma": 0.018933635299452987,
+            "kernel": "rbf"
+        },
+        "testAcc": 0.9569
+    },
+    "numFeat1000": {
+        "modelParams": {
+            "C": 507.4247417627177,
+            "gamma": 0.005786106401070879,
+            "kernel": "rbf"
+        },
+        "testAcc": 0.9569
+    }
+}
