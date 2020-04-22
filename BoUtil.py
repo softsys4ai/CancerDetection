@@ -104,9 +104,7 @@ def evaluation(
 
     numFGs = len(numFeats)
 
-    if testDataTags == None:
-        transferAccsAllFGs = np.zeros(numFGs)
-    else:
+    if testDataTags != None:
         #if oriDF == None:
         #    raise "oriDF should not be None because testDataTags is not None"
         transferAccsAllFGs = np.zeros((numFGs, len(testDataTags)))
@@ -149,8 +147,7 @@ def evaluation(
                 #dataDir=dataDirPrefix+"_"+labelName+"_"+dataTag
                 #dataFP = os.path.join(dataDir, str(numFeat)+"feats.csv")
                 #testDataBank[dataTag] = pd.read_csv(dataFP)
-                testDataBank[dataTag] = testDF
-            
+                testDataBank[dataTag] = testDF        
 
             sourceData = testDataBank[sourceDataTag]
         else:
