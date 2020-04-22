@@ -108,7 +108,7 @@ def dataProcess(filepath, labelName):
     del columns
     return df
 
-def extractFeatures(X, Y, num_feat_list, featname, resultDir):
+def extractFeatures(X, Y, num_feat_list, featname, resultDir, discrete_x=False):
     hsic_lasso = HSICLasso()
     for num_feat in num_feat_list:
         gc.collect()
@@ -116,7 +116,7 @@ def extractFeatures(X, Y, num_feat_list, featname, resultDir):
         print("Selecting {} features.".format(num_feat))
 
         hsic_lasso.input(X,Y,featname=featname)
-        hsic_lasso.classification(num_feat=num_feat, M=1)
+        hsic_lasso.classification(num_feat=num_feat, M=1, discrete_x=discrete_x)
 
         #Save parameters
         saveFeatFP=os.path.join(resultDir, str(num_feat)+"feats.csv")
