@@ -50,7 +50,7 @@ def getNumClass(labelName, value):
             return 1
         else:
             return -1
-    else: # Class
+    elif labelName =="Class":
         if value == "Young Cancer":
             return 1
         elif value == "Young Clear":
@@ -63,13 +63,19 @@ def getNumClass(labelName, value):
             return 5
         else: # Old Polyp
             return 6
+    else: # Age Group
+        if labelName == "Age Group":
+            if value == "Young":
+                return 1
+            else: # Old
+                return -1
 
 def dataProcess(filepath, labelName):
     #columns = ["Sample Title", "Age Group", "Diagnosis", "Class", "Age", "Gender"]
     #indices = [0, 3, 4, 5, 9, 10]
-    columns = ['class', 'age']
+    columns = ['class']
     if labelName == "Diagnosis": # Cancer, No-Cancer
-        columns.append("age group")
+        columns.append("Age Group")
     records = []
     start_time = time.time()
     with open(filepath) as fp:
@@ -86,11 +92,13 @@ def dataProcess(filepath, labelName):
             record = []
             
             if labelName == "Diagnosis": # Cancer, No-Cancer
-                record = [getNumClass(labelName, parts[4]), parts[9], parts[3]]
-            else: # Class:
+                record = [getNumClass(labelName, parts[4]), parts[3]]
+            elif labelName == "Class": # Class:
                 # Young Cancer, Young Clear, Young Polyp
                 # Old Cancer, Old Clear, Old Polyp
-                record = [getNumClass(labelName, parts[5]), parts[9]]
+                record = [getNumClass(labelName, parts[5])]
+            else: # Age Group
+                record = [getNumClass(labelName, parts[3])]
             record.extend([float(x) for x in parts[12:]])
             records.append(record)
             if len(records) % 25 == 0:

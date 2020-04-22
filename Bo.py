@@ -70,7 +70,7 @@ def main(argv):
     if labelName == "Diagnosis":
         dataTags = ["All", "Young", "Old"]
         testDataTags = dataTags
-    else: # Class
+    else: # Class, Age Group
         dataTags = ["All"]
         testDataTags = None
     numDataTags = len(dataTags)

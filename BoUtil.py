@@ -104,10 +104,12 @@ def evaluation(
 
     numFGs = len(numFeats)
 
-    if testDataTags != None:
+    if labelName = "Diagnosis": # Cancer Detection, binary classifier
         #if oriDF == None:
         #    raise "oriDF should not be None because testDataTags is not None"
         transferAccsAllFGs = np.zeros((numFGs, len(testDataTags)))
+    else: # in this branch, transferAccsAllFGs is dummy variable. Refactor code later.
+        transferAccsAllFGs = np.zeros(numFGs)
 
     if class_weight == None:
         weight_tag = "WeightEqual"
@@ -126,7 +128,8 @@ def evaluation(
         numFeat = numFeats[nfIdx]
         print("\n[Using {} features]".format(numFeat))
 
-        if testDataTags != None: # Cancer - Young and Old
+        #if testDataTags != None: # Cancer - Young and Old
+        if labelName = "Diagnosis": # Cancer Detection, binary classifier
             # get the feature indices in the original dataset
             feats_impt_fp = os.path.join(
                     dataDirPrefix+"_"+labelName+"_"+sourceDataTag,
@@ -142,7 +145,7 @@ def evaluation(
                     testDF = oriDF[feats_names]
                     testDF.insert(loc=0, column='class', value=oriDF["class"])
                 else: # Young or Old
-                    testDF = oriDF.loc[oriDF["age group"]==dataTag, feats_names]
+                    testDF = oriDF.loc[oriDF["Age Group"]==dataTag, feats_names]
                     testDF.insert(loc=0, column='class', value=oriDF["class"])
                 #dataDir=dataDirPrefix+"_"+labelName+"_"+dataTag
                 #dataFP = os.path.join(dataDir, str(numFeat)+"feats.csv")
