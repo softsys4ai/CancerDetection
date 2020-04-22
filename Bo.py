@@ -1,8 +1,9 @@
 # Usage:
-# python <script_name> <classifier_name> <label_name> <original_data_filepath>
+# python <script_name> <classifier_name> <label_name> <class_weight> <original_data_filepath>
 #    classifier_name  = "SVM", "RF"
 #    label_name =  "Diagnosis", "Class"
-#    original_data_filepath:
+#    class_weight = "equal", "balanced", float
+#    original_data_filepath: Optional. It is only for "Diagnosis" Task
 #       e.g., Sample_Master_Source_and_Platform_batch_removed_Extra_Sample_Info.exported_for_AI.txt
 #
 # The script should be in the same directory level as directories where the extracted features files locate
@@ -43,10 +44,24 @@ numFGs = len(numFeats)
 dataDirPrefix = "extFeat"
 
 def main(argv):
+    global numFeats
     clf_name = argv[0] # "SVM", "RF"
     labelName = argv[1] # "Diagnosis", "Class"
-    original_data_filepath = argv[2]
-    oriDF = dataProcess(original_data_filepath, labelName)
+    class_weight_label = argv[2] # equal, balanced, float
+
+    if class_weight_label == "balanced":
+        class_weight = "balanced"
+    elif class_weight_label == "equal":
+        class_weight = None
+    else:
+        class_weight = {1 : float(class_weight_label)}
+    print("class_weight: {}".format(class_weight))
+
+    if labelName == "Diagnosis":
+        original_data_filepath = argv[3]
+        oriDF = dataProcess(original_data_filepath, labelName)
+    else:
+        oriDF = None
 
     domain = domains[clf_name]
     saveFileNamePrefix = "{}_{}_{}FeatureGroups_{}TestRatio_{}BOIters".format(
@@ -77,7 +92,8 @@ def main(argv):
                 numFGs, numFeats, test_ratio, cv,
                 domain, clf_name, itersBO,
                 saveFileNamePrefix, figID,
-                testDataTags=testDataTags, oriDF=oriDF)
+                testDataTags=testDataTags, oriDF=oriDF,
+                class_weight=class_weight)
         if testDataTags != None:
             crossDataAccs[dtIdx] = transferAccsAllFGs
 
