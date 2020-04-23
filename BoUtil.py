@@ -145,7 +145,7 @@ def evaluation(
                     testDF = oriDF[feats_names]
                     testDF.insert(loc=0, column='class', value=oriDF["class"])
                 else: # Young or Old
-                    testDF = oriDF.loc[oriDF["Age Group"]==dataTag, feats_names]
+                    testDF = oriDF.loc[oriDF["AgeGroup"]==dataTag, feats_names]
                     testDF.insert(loc=0, column='class', value=oriDF["class"])
                 #dataDir=dataDirPrefix+"_"+labelName+"_"+dataTag
                 #dataFP = os.path.join(dataDir, str(numFeat)+"feats.csv")

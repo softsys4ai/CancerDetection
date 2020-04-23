@@ -63,19 +63,20 @@ def getNumClass(labelName, value):
             return 5
         else: # Old Polyp
             return 6
-    else: # Age Group
-        if labelName == "Age Group":
-            if value == "Young":
-                return 1
-            else: # Old
-                return -1
+    elif labelName == "AgeGroup":
+        if value == "Young":
+            return 1
+        else: # Old
+            return -1
+    else:
+        raise "Unsupported task {}".format(labelName)
 
 def dataProcess(filepath, labelName):
     #columns = ["Sample Title", "Age Group", "Diagnosis", "Class", "Age", "Gender"]
     #indices = [0, 3, 4, 5, 9, 10]
     columns = ['class']
     if labelName == "Diagnosis": # Cancer, No-Cancer
-        columns.append("Age Group")
+        columns.append("AgeGroup")
     records = []
     start_time = time.time()
     with open(filepath) as fp:

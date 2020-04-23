@@ -70,7 +70,7 @@ def main(argv):
     if labelName == "Diagnosis":
         dataTags = ["All", "Young", "Old"]
         testDataTags = dataTags
-    else: # Class, Age Group
+    else: # Class, AgeGroup
         dataTags = ["All"]
         testDataTags = None
     numDataTags = len(dataTags)
@@ -109,8 +109,8 @@ def main(argv):
             crossDataAccsDF = pd.DataFrame(data=crossDataAccs[:, nfIdx, :], columns=dataTags)
             crossDataAccsFP = os.path.join(
                     crossDataAccDir,
-                    "{}_{}_{}Feat_{}TestRatio_{}BOIters_TransferAccs.csv".format(
-                        labelName, clf_name, numFeat, int(100*test_ratio), itersBO)
+                    "{}_{}_{}Feat_{}TestRatio_{}BOIters_{}Weight_TransferAccs.csv".format(
+                        labelName, clf_name, numFeat, int(100*test_ratio), itersBO, class_weight_label)
                     )
             crossDataAccsDF.to_csv(crossDataAccsFP, index=False)
 
