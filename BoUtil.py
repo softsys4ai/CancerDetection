@@ -104,7 +104,7 @@ def evaluation(
 
     numFGs = len(numFeats)
 
-    if labelName = "Diagnosis": # Cancer Detection, binary classifier
+    if labelName == "Diagnosis": # Cancer Detection, binary classifier
         #if oriDF == None:
         #    raise "oriDF should not be None because testDataTags is not None"
         transferAccsAllFGs = np.zeros((numFGs, len(testDataTags)))
@@ -129,7 +129,7 @@ def evaluation(
         print("\n[Using {} features]".format(numFeat))
 
         #if testDataTags != None: # Cancer - Young and Old
-        if labelName = "Diagnosis": # Cancer Detection, binary classifier
+        if labelName == "Diagnosis": # Cancer Detection, binary classifier
             # get the feature indices in the original dataset
             feats_impt_fp = os.path.join(
                     dataDirPrefix+"_"+labelName+"_"+sourceDataTag,
