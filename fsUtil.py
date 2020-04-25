@@ -79,7 +79,7 @@ def dataProcess(filepath, labelName):
         columns.append("AgeGroup")
     records = []
     start_time = time.time()
-    with open(filepath) as fp:
+    with open(filepath, encoding='UTF-8') as fp:
         print("Processing the table header")
         line = fp.readline().strip()
         parts = line.split("\t")
