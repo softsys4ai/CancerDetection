@@ -21,10 +21,10 @@ def main(argv):
     if labelName == "Diagnosis":
         featname = list(df.columns)
         featname.remove("class")
-        featname.remove("age group")
+        featname.remove("AgeGroup")
 
         print("[Process all age groups]")
-        X = df.loc[:, (df.columns != "class") & (df.columns != "age group")].to_numpy(dtype=np.float32)
+        X = df.loc[:, (df.columns != "class") & (df.columns != "AgeGroup")].to_numpy(dtype=np.float32)
         Y = df['class'].to_numpy(dtype=np.float32)
         resultDir = "extFeat_"+labelName+"_All"
         if not os.path.exists(resultDir):
@@ -36,11 +36,11 @@ def main(argv):
         for ageGroup in ageGroups:
             print("[Process {} Group]".format(ageGroup))
             X = df.loc[
-                    df["age group"] == ageGroup,
-                    (df.columns != "class") & (df.columns != "age group")
+                    df["AgeGroup"] == ageGroup,
+                    (df.columns != "class") & (df.columns != "AgeGroup")
                     ].to_numpy(dtype=np.float32)
             Y = df.loc[
-                    df["age group"] == ageGroup,
+                    df["AgeGroup"] == ageGroup,
                     df.columns == "class"
                     ].to_numpy(dtype=np.float32).flatten() # before flattern, its shape is (nSamples, 1)
             print("[{}] X:{}, Y:{}, feat:{}".format(ageGroup, np.shape(X), np.shape(Y), len(featname)))
