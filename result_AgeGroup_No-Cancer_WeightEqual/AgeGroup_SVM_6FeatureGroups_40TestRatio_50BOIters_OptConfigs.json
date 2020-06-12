@@ -1,0 +1,50 @@
+{
+    "numFeat5": {
+        "modelParams": {
+            "C": 942.3014471955914,
+            "gamma": 0.01833618240827396,
+            "kernel": "rbf"
+        },
+        "testAcc": 0.9574
+    },
+    "numFeat10": {
+        "modelParams": {
+            "C": 468.9590118399657,
+            "gamma": 0.01642153569412459,
+            "kernel": "rbf"
+        },
+        "testAcc": 0.9681
+    },
+    "numFeat30": {
+        "modelParams": {
+            "C": 903.6909965312143,
+            "gamma": 0.01678714811492707,
+            "kernel": "rbf"
+        },
+        "testAcc": 0.9362
+    },
+    "numFeat50": {
+        "modelParams": {
+            "C": 473.2858987310435,
+            "gamma": 0.013892259896953113,
+            "kernel": "rbf"
+        },
+        "testAcc": 0.9255
+    },
+    "numFeat70": {
+        "modelParams": {
+            "C": 724.76929358208,
+            "gamma": 0.0127714103923539,
+            "kernel": "rbf"
+        },
+        "testAcc": 0.9362
+    },
+    "numFeat100": {
+        "modelParams": {
+            "C": 666.4451725002125,
+            "gamma": 0.006025371747517265,
+            "kernel": "rbf"
+        },
+        "testAcc": 0.9574
+    }
+}
