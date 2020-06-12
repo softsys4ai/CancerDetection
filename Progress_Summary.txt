@@ -1,3 +1,16 @@
+# June 12
+Finished the age detection task. Below is the summary.
+
+1. Performance of best models
+      A. All groups: 94.78% (using 95 features)
+      B. Only cancer group: 92.68% (using 100 features)
+      C. Only no-cancer group: 97.87% (using 30 features)
+
+2. ToDo:
+      A. Compare the list of selected 30 features (Age Detection on No-Cancer group) with the selected features for Cancer Detection on Young group. (Jianhai)
+      B. Identify optimal the threshold of each of 30 CGs (Age Deteciton on Young Group) such that the cancer prediciton on young people can reach to the highest accuracy. (Jianhai)
+      C. Build a model to classify 4 labels, which are Young Cancer, Young No-Cancer, Old Cancer and Old No-Cancer. (Ying)
+
 # April 20
 HSIC Lasso: feature selection - 111 influential features out of ~400k features
 Bayesian Optimization: tune SVM
