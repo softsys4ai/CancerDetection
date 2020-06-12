@@ -71,15 +71,22 @@ def getNumClass(labelName, value):
     else:
         raise "Unsupported task {}".format(labelName)
 
-def dataProcess(filepath, labelName):
+def dataProcess(filepath, labelName, selectAgeGender=False):
     #columns = ["Sample Title", "Age Group", "Diagnosis", "Class", "Age", "Gender"]
     #indices = [0, 3, 4, 5, 9, 10]
     columns = ['class']
     if labelName == "Diagnosis": # Cancer, No-Cancer
-        columns.append("AgeGroup")
+        columns = ['class', 'AgeGroup']
+    elif labelName == 'AgeGroup':
+        columns = ['AgeGroup', 'class']
+    else:
+        columns = ['class']	
+    if selectAgeGender:
+        columns.extend(["Age", "Gender"])
+
     records = []
     start_time = time.time()
-    with open(filepath, encoding='UTF-8') as fp:
+    with open(filepath, encoding='ISO-8859-1') as fp: # UTF-8
         print("Processing the table header")
         line = fp.readline().strip()
         parts = line.split("\t")
@@ -99,7 +106,10 @@ def dataProcess(filepath, labelName):
                 # Old Cancer, Old Clear, Old Polyp
                 record = [getNumClass(labelName, parts[5])]
             else: # Age Group
-                record = [getNumClass(labelName, parts[3])]
+                record = [getNumClass(labelName, parts[3]), parts[4]]
+            if selectAgeGender:
+                record.extend([float(parts[9]), parts[10]])
+
             record.extend([float(x) for x in parts[12:]])
             records.append(record)
             if len(records) % 25 == 0:

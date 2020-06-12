@@ -103,8 +103,8 @@ def evaluation(
         saveFileNamePrefix, figID, testDataTags=None, oriDF=None, class_weight=None):
 
     numFGs = len(numFeats)
-
-    if labelName == "Diagnosis": # Cancer Detection, binary classifier
+    # Binary Classifier: Cancer Detection or Age Detection
+    if labelName == "Diagnosis" or labelName == "AgeGroup":
         #if oriDF == None:
         #    raise "oriDF should not be None because testDataTags is not None"
         transferAccsAllFGs = np.zeros((numFGs, len(testDataTags)))
@@ -126,10 +126,12 @@ def evaluation(
     for nfIdx in range(numFGs):
         start_time = time.time()
         numFeat = numFeats[nfIdx]
-        print("\n[Using {} features]".format(numFeat))
+        print("\n===>[Using {} features]".format(numFeat))
 
         #if testDataTags != None: # Cancer - Young and Old
-        if labelName == "Diagnosis": # Cancer Detection, binary classifier
+        if labelName == "Diagnosis" or labelName == "AgeGroup":
+            splitColName = "AgeGroup" if labelName == "Diagnosis" else "class"
+
             # get the feature indices in the original dataset
             feats_impt_fp = os.path.join(
                     dataDirPrefix+"_"+labelName+"_"+sourceDataTag,
@@ -143,10 +145,13 @@ def evaluation(
                 if dataTag == "All":
                     #testDF = oriDF[oriDF.columns.isin(feats_names)]
                     testDF = oriDF[feats_names]
-                    testDF.insert(loc=0, column='class', value=oriDF["class"])
-                else: # Young or Old
-                    testDF = oriDF.loc[oriDF["AgeGroup"]==dataTag, feats_names]
-                    testDF.insert(loc=0, column='class', value=oriDF["class"])
+                    testDF.insert(loc=0, column=labelName, value=oriDF[labelName])
+                # Split 'Diagnosis' group into Young or Old
+                # Split "AgeGroup" into Cancer and No-Cancer
+                else:
+                    testDF = oriDF.loc[oriDF[splitColName]==dataTag, feats_names]
+                    testDF.insert(loc=0, column=labelName, value=oriDF[labelName])
+
                 #dataDir=dataDirPrefix+"_"+labelName+"_"+dataTag
                 #dataFP = os.path.join(dataDir, str(numFeat)+"feats.csv")
                 #testDataBank[dataTag] = pd.read_csv(dataFP)
@@ -158,13 +163,14 @@ def evaluation(
             sourceDataFP = os.path.join(sourceDataDir, str(numFeat)+"feats.csv")
             sourceData = pd.read_csv(sourceDataFP)
 
-        Y = sourceData['class'].to_numpy()
-        X = sourceData.loc[:, sourceData.columns != "class"].to_numpy()
+        Y = sourceData[labelName].to_numpy()
+        X = sourceData.loc[:, sourceData.columns != labelName].to_numpy()
 
         train_index, test_index = next(StratifiedShuffleSplit(test_size=test_ratio, random_state=123).split(X,Y))
         X_train, X_test = X[train_index], X[test_index]
         y_train, y_test = Y[train_index], Y[test_index]
-
+        
+        '''
         opt = GPyOpt.methods.BayesianOptimization(
                 f = partial(fitCV, X_train=X_train, y_train=y_train, cv=cv, domain=domain, clf_name=clf_name, class_weight=class_weight),  # function to optimize
                 domain = domain,         # box-constrains of the problem
@@ -174,34 +180,42 @@ def evaluation(
 
         x_best = opt.x_opt
         best_params = mapConfig(x_best, domain, clf_name=clf_name)
-        print("[Best Config]: {}".format(best_params))
+        print("===>[Best Config]: {}".format(best_params))
         optModel = createModel(best_params, clf_name)
         optModel.fit(X_train, y_train)
 
         trainAcc = round(optModel.score(X_train, y_train), 4)
         testAcc = round(optModel.score(X_test, y_test), 4)
-        print("[{}] Train score: {}, Test score: {}. ({} seconds)".format(
+        print("===>[{}] Train score: {}, Test score: {}. ({} seconds)".format(
             numFeat, trainAcc, testAcc, time.time()-start_time) )
         accs[nfIdx, 0] = trainAcc
         accs[nfIdx, 1] = testAcc
 
         optConfigs["numFeat"+str(numFeat)] = {"modelParams": best_params, "testAcc": testAcc}
+        '''
+
         bestModelFP = os.path.join(
                 resultFDName,
                 saveFileNamePrefix+"numFeat"+str(numFeat)+"_Model.sav")
-        pickle.dump(optModel, open(bestModelFP, "wb"))
+        #pickle.dump(optModel, open(bestModelFP, "wb"))
+
+        # load pre-trained model
+        optModel = pickle.load(open(bestModelFP, "rb"))
 
         # save test acc cross datasets
         if testDataTags:
             transferAccsPerFeatGroup = []
             for testDataTag in testDataTags:
                 testData = testDataBank[testDataTag]
-                teY = testData['class'].to_numpy()
-                teX = testData.loc[:, sourceData.columns != "class"].to_numpy()
+                teY = testData[labelName].to_numpy()
+                teX = testData.loc[:, sourceData.columns != labelName].to_numpy()
+                if testDataTag == sourceDataTag:
+                    teX = teX[test_index]
+                    teY = teY[test_index]
                 transferAccsPerFeatGroup.append(round(optModel.score(teX, teY), 4))
 
             transferAccsAllFGs[nfIdx] = np.array(transferAccsPerFeatGroup)            
-
+    '''
     # Save optimal configs
     json_str = json.dumps(optConfigs, indent=4)
     optConfigsFP = os.path.join(
@@ -219,7 +233,7 @@ def evaluation(
     npRowValues = numFeats 
     NP2CSV(accs, npColumnNames, npRowName, npRowValues, fp=accsFP)
     plotAcc(figID, numFeats, accs, clf_name, test_ratio, resultFDName, itersBO)
-
+    '''
     return transferAccsAllFGs
 
 

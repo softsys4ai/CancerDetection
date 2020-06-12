@@ -37,17 +37,22 @@ domains = {"SVM": SVM_Domain, "RF": RF_Domain}
 itersBO = 50
 cv = 5 # folds in cross validation
 resultFDPrex="TestRatio"
-numFeats = [5, 10, 30, 50, 70, 100, 150, 200, 400, 600, 800, 1000]
-
 test_ratio= 0.4
-numFGs = len(numFeats)
 dataDirPrefix = "extFeat"
+
+#numFeats = [5, 10, 30, 50, 70, 100, 150, 200, 400, 600, 800, 1000]
+#numFGs = len(numFeats)
 
 def main(argv):
     global numFeats
     clf_name = argv[0] # "SVM", "RF"
-    labelName = argv[1] # "Diagnosis", "Class"
+    labelName = argv[1] # "Diagnosis", "Class", "AgeGroup"
     class_weight_label = argv[2] # equal, balanced, float
+    if labelName == "Diagnosis":
+        numFeats = [5, 10, 30, 50, 70, 100, 150, 200, 400, 600, 800, 1000]
+    else: # currently only valid for "AgeGroup"
+        numFeats = [5, 10, 30, 50, 70, 100]
+    numFGs = len(numFeats)
 
     if class_weight_label == "balanced":
         class_weight = "balanced"
@@ -57,7 +62,7 @@ def main(argv):
         class_weight = {1 : float(class_weight_label)}
     print("class_weight: {}".format(class_weight))
 
-    if labelName == "Diagnosis":
+    if labelName == "Diagnosis" or labelName == "AgeGroup":
         original_data_filepath = argv[3]
         oriDF = dataProcess(original_data_filepath, labelName)
     else:
@@ -69,6 +74,9 @@ def main(argv):
 
     if labelName == "Diagnosis":
         dataTags = ["All", "Young", "Old"]
+        testDataTags = dataTags
+    elif labelName == "AgeGroup":
+        dataTags = ["All", "Cancer", "No-Cancer"]
         testDataTags = dataTags
     else: # Class, AgeGroup
         dataTags = ["All"]
@@ -86,7 +94,7 @@ def main(argv):
     #testDataTags = dataTags
     for dtIdx in range(numDataTags):
         sourceDataTag = dataTags[dtIdx]
-        print("Training a classifier with the source data: {}".format(sourceDataTag))
+        print("\nTraining a classifier with the source data: {}".format(sourceDataTag))
         transferAccsAllFGs = evaluation(
                 dataDirPrefix, sourceDataTag, labelName,
                 numFGs, numFeats, test_ratio, cv,
