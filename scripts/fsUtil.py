@@ -63,6 +63,17 @@ def getNumClass(labelName, value):
             return 5
         else: # Old Polyp
             return 6
+    elif labelName =="CancerAge":
+        if value == "Young Cancer":
+            return 1
+        elif value == "Young Clear" or value == "Young Polyp":
+            return 2
+        elif value == "Old Cancer":
+            return 3
+        elif value == "Old Clear" or value == "Old Polyp":
+            return 4
+        else: # throw an error
+            raise "Non-known value {} for CancerAge classification".format(value)
     elif labelName == "AgeGroup":
         if value == "Young":
             return 1
@@ -74,12 +85,12 @@ def getNumClass(labelName, value):
 def dataProcess(filepath, labelName, selectAgeGender=False):
     #columns = ["Sample Title", "Age Group", "Diagnosis", "Class", "Age", "Gender"]
     #indices = [0, 3, 4, 5, 9, 10]
-    columns = ['class']
+    #columns = ['class']
     if labelName == "Diagnosis": # Cancer, No-Cancer
         columns = ['class', 'AgeGroup']
     elif labelName == 'AgeGroup':
         columns = ['AgeGroup', 'class']
-    else:
+    else: # Class, CancerAge
         columns = ['class']	
     if selectAgeGender:
         columns.extend(["Age", "Gender"])
@@ -101,9 +112,13 @@ def dataProcess(filepath, labelName, selectAgeGender=False):
             
             if labelName == "Diagnosis": # Cancer, No-Cancer
                 record = [getNumClass(labelName, parts[4]), parts[3]]
-            elif labelName == "Class": # Class:
-                # Young Cancer, Young Clear, Young Polyp
-                # Old Cancer, Old Clear, Old Polyp
+            elif labelName == "Class" or labelName == "CancerAge":
+                # Class:
+                #   Young Cancer, Young Clear, Young Polyp
+                #   Old Cancer, Old Clear, Old Polyp
+                # CancerAge:
+                #   Young Cancer, {Young Clear, Young Polyp}
+                #   Old Cancer, {Old Clear, Old Polyp}
                 record = [getNumClass(labelName, parts[5])]
             else: # Age Group
                 record = [getNumClass(labelName, parts[3]), parts[4]]

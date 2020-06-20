@@ -12,8 +12,10 @@ from fsUtil import saveDF, saveFeatures, getNumClass, dataProcess, extractFeatur
 #num_feat_list = [5, 10, 30, 50, 70, 100, 150, 200, 400, 600, 800, 1000]
 
 # Detect AgeGroup: maxmimum number of useful features is 95
-num_feat_list = [15, 20, 25] #[5, 10, 30, 50, 70, 100]
+#num_feat_list = [5, 10, 15, 20, 25, 30, 50, 70, 100]
 
+# Detect AgeGroup-Diagnosis
+num_feat_list = [5, 10, 30, 50, 70, 100, 150, 200]
 
 def main(argv):
     original_data_filepath = argv[0]
@@ -84,7 +86,7 @@ def main(argv):
             extractFeatures(X, Y, num_feat_list, featname, resultDir)
 
 
-    else:
+    else: # CancerAge, Class
         X = df.loc[:, df.columns != "class"].to_numpy(dtype=np.float32)
         Y = df['class'].to_numpy(dtype=np.float32)
         featname = list(df.columns)
