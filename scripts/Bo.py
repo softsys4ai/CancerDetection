@@ -22,7 +22,7 @@ SVM_Domain = [
         {'name': 'C',      'type': 'continuous', 'domain': (1, 1000)},
         #{'name': 'kernel', 'type': 'categorical', 'domain': (0, 1)},
         #{'name': 'degree', 'type': 'discrete', 'domain': (3, 4, 5, 6, 7, 8)},
-        {'name': 'gamma',  'type': 'continuous', 'domain': (1e-5, 0.02)}
+        {'name': 'gamma',  'type': 'continuous', 'domain': (1e-5, 0.1)}
         ]
 
 RF_Domain = [
@@ -46,12 +46,15 @@ dataDirPrefix = "extFeat"
 def main(argv):
     global numFeats
     clf_name = argv[0] # "SVM", "RF"
-    labelName = argv[1] # "Diagnosis", "Class", "AgeGroup"
+    labelName = argv[1] # "Diagnosis", "Class", "AgeGroup" "CancerAge"
     class_weight_label = argv[2] # equal, balanced, float
     if labelName == "Diagnosis":
         numFeats = [5, 10, 30, 50, 70, 100, 150, 200, 400, 600, 800, 1000]
-    else: # currently only valid for "AgeGroup"
+    elif labelName == "AgeGroup": # currently only valid for "AgeGroup"
         numFeats = [5, 10, 30, 50, 70, 100]
+    else: # valid for "CancerAge"
+        numFeats = [5, 10, 30, 50, 70, 100, 125, 150, 175, 200]
+   
     numFGs = len(numFeats)
 
     if class_weight_label == "balanced":
@@ -78,7 +81,7 @@ def main(argv):
     elif labelName == "AgeGroup":
         dataTags = ["All", "Cancer", "No-Cancer"]
         testDataTags = dataTags
-    else: # Class, AgeGroup
+    else: # Class, CancerAge
         dataTags = ["All"]
         testDataTags = None
     numDataTags = len(dataTags)

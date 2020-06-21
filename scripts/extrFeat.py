@@ -15,7 +15,7 @@ from fsUtil import saveDF, saveFeatures, getNumClass, dataProcess, extractFeatur
 #num_feat_list = [5, 10, 15, 20, 25, 30, 50, 70, 100]
 
 # Detect AgeGroup-Diagnosis
-num_feat_list = [5, 10, 30, 50, 70, 100, 150, 200]
+num_feat_list = [5, 10, 30, 50, 70, 100, 125, 150, 175, 200]
 
 def main(argv):
     original_data_filepath = argv[0]

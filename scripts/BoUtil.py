@@ -15,6 +15,10 @@ import GPyOpt
 import pickle
 from functools import partial
 
+def createConfusionMatrix(y_test, y_pred, class_names):
+    num_classes = len(class_names)
+    
+    reversefactor = dict(zip())
 
 def mapConfig(params, domain, clf_name="RF"):
     dict_params = dict(zip([el['name'] for el in domain], params))
@@ -124,12 +128,14 @@ def evaluation(
     accs = np.zeros((numFGs, 2))
     optConfigs = {}
     for nfIdx in range(numFGs):
+        targetName = ""
         start_time = time.time()
         numFeat = numFeats[nfIdx]
         print("\n===>[Using {} features]".format(numFeat))
 
         #if testDataTags != None: # Cancer - Young and Old
         if labelName == "Diagnosis" or labelName == "AgeGroup":
+            targetName = labelNanme
             splitColName = "AgeGroup" if labelName == "Diagnosis" else "class"
 
             # get the feature indices in the original dataset
@@ -162,19 +168,19 @@ def evaluation(
             sourceDataDir=dataDirPrefix+"_"+labelName+"_"+sourceDataTag
             sourceDataFP = os.path.join(sourceDataDir, str(numFeat)+"feats.csv")
             sourceData = pd.read_csv(sourceDataFP)
+            targetName = "class"
 
-        Y = sourceData[labelName].to_numpy()
-        X = sourceData.loc[:, sourceData.columns != labelName].to_numpy()
+        Y = sourceData[targetName].to_numpy()
+        X = sourceData.loc[:, sourceData.columns != targetName].to_numpy()
 
         train_index, test_index = next(StratifiedShuffleSplit(test_size=test_ratio, random_state=123).split(X,Y))
         X_train, X_test = X[train_index], X[test_index]
         y_train, y_test = Y[train_index], Y[test_index]
         
-        '''
         opt = GPyOpt.methods.BayesianOptimization(
                 f = partial(fitCV, X_train=X_train, y_train=y_train, cv=cv, domain=domain, clf_name=clf_name, class_weight=class_weight),  # function to optimize
                 domain = domain,         # box-constrains of the problem
-                acquisition_type ='EI')       # EI, MPI, LCB acquisition
+                acquisition_type ='EI')       # EI/EI_MCMC, MPI/MPI_MCMC, LCB/LCB_MCMC, ES/ES_MCMC acquisition
         opt.run_optimization(max_iter=itersBO)
         #opt.plot_convergence()
 
@@ -191,16 +197,28 @@ def evaluation(
         accs[nfIdx, 0] = trainAcc
         accs[nfIdx, 1] = testAcc
 
+        if labelName == "CancerAge": # multiple classification
+            cmFP = os.path.join(
+                    resultFDName,
+                    saveFileNamePrefix+"_numFeat"+str(numFeat)+"_ConfusionMatrix.csv")
+            y_pred = optModel.predict(X_test)
+            classNames = ["Young Cancer", "Young No-Cancer", "Old Cancer", "Old No-Cancer"]
+            numClasses = 4
+            reversefactor = dict(zip(range(1, 1+numClasses), classNames))
+            y_test_str = np.vectorize(reversefactor.get)(y_test)
+            y_pred_str = np.vectorize(reversefactor.get)(y_pred)
+            confusionMatrix = pd.crosstab(y_test_str, y_pred_str, rownames=["Actual Labels"], colnames=["Predicted Labels"])
+            confusionMatrix.to_csv(cmFP)
+
         optConfigs["numFeat"+str(numFeat)] = {"modelParams": best_params, "testAcc": testAcc}
-        '''
 
         bestModelFP = os.path.join(
                 resultFDName,
-                saveFileNamePrefix+"numFeat"+str(numFeat)+"_Model.sav")
-        #pickle.dump(optModel, open(bestModelFP, "wb"))
+                saveFileNamePrefix+"_numFeat"+str(numFeat)+"_Model.sav")
+        pickle.dump(optModel, open(bestModelFP, "wb"))
 
         # load pre-trained model
-        optModel = pickle.load(open(bestModelFP, "rb"))
+        #optModel = pickle.load(open(bestModelFP, "rb"))
 
         # save test acc cross datasets
         if testDataTags:
@@ -215,7 +233,7 @@ def evaluation(
                 transferAccsPerFeatGroup.append(round(optModel.score(teX, teY), 4))
 
             transferAccsAllFGs[nfIdx] = np.array(transferAccsPerFeatGroup)            
-    '''
+    
     # Save optimal configs
     json_str = json.dumps(optConfigs, indent=4)
     optConfigsFP = os.path.join(
@@ -233,7 +251,7 @@ def evaluation(
     npRowValues = numFeats 
     NP2CSV(accs, npColumnNames, npRowName, npRowValues, fp=accsFP)
     plotAcc(figID, numFeats, accs, clf_name, test_ratio, resultFDName, itersBO)
-    '''
+    
     return transferAccsAllFGs
 
 

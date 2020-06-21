@@ -10,10 +10,10 @@
 TASK=$1 # "Class"
 echo -e "Task: detect ${TASK}"
 
-#python Bo.py SVM ${TASK} equal  
+python Bo.py SVM ${TASK} equal  
 #python Bo.py SVM ${TASK} balanced  
 
 
-python Bo.py RF ${TASK} equal  
+#python Bo.py RF ${TASK} equal  
 #python Bo.py RF ${TASK} balanced  
 
