@@ -1,0 +1,5 @@
+Actual Labels,Old Cancer,Old No-Cancer,Young Cancer
+Old Cancer,25,6,1
+Old No-Cancer,4,80,0
+Young Cancer,5,4,0
+Young No-Cancer,0,9,0
