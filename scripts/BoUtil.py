@@ -135,7 +135,7 @@ def evaluation(
 
         #if testDataTags != None: # Cancer - Young and Old
         if labelName == "Diagnosis" or labelName == "AgeGroup":
-            targetName = labelNanme
+            targetName = labelName
             splitColName = "AgeGroup" if labelName == "Diagnosis" else "class"
 
             # get the feature indices in the original dataset
